@@ -43,5 +43,5 @@ class RedactingFormatter(logging.Formatter):
         """This method is used to format the logging"""
         msg = super().format(record)
         final_message = filter_datum(self.fields, self.REDACTION, msg,
-                                    self.SEPARATOR)
+                                     self.SEPARATOR)
         return final_message
