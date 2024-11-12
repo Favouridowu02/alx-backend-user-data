@@ -9,7 +9,7 @@ import logging
 
 
 def filter_datum(fields: List[str], redaction: str, message: str,
-                 separator: str) -> str:
+                 seperator: str) -> str:
     """
         This function returns the log message obfuscated
 
@@ -21,7 +21,7 @@ def filter_datum(fields: List[str], redaction: str, message: str,
         separator: a string representing by which character is separating
     """
     for key in fields:
-        message = re.sub(fr'{key}=[^ {separator}]+', f"{key}={redaction}",
+        message = re.sub(fr'{key}=[^ {seperator}]+', f"{key}={redaction}",
                          message)
     return message
 
