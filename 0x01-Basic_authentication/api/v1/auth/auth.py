@@ -3,13 +3,14 @@
     This Module contains the authentication api
 """
 from flask import request
-from api.v1.views import app_views 
+from api.v1.views import app_views
 from typing import List, TypeVar
+
 
 class Auth:
     """
         This class is used to manage the API authentication
-        
+
         Methods:
           - require_auth:
           - authorization_header:
