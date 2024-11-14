@@ -3,7 +3,9 @@
     This Module contains class BasicAuth that inherits from Auth class
 """
 from api.v1.auth.auth import Auth
+from models.user import User
 import base64
+from typing import TypeVar
 
 
 class BasicAuth(Auth):
@@ -67,3 +69,28 @@ class BasicAuth(Auth):
         if ":" not in decoded_base64_authorization_header:
             return (None, None)
         return tuple(decoded_base64_authorization_header.split(":"))
+
+    def user_object_from_credentials(self, user_email: str, user_pwd:
+                                     str) -> TypeVar('User'):
+        """
+            This method is used to return the user object from the credentials
+
+            Arguments:
+                user_email: the user email(Str)
+                user_pwd: the user password(Str)
+            Returns: an instrnace of the User class based on the email and
+                     the password
+        """
+        if user_email is None or not isinstance(user_email, str):
+            return None
+        if user_pwd is None or not isinstance(user_pwd, str):
+            return None
+        users = User()
+        users.load_from_file()
+        test_searched = {"email": user_email}
+        users_searched = users.search(attributes=test_searched)
+        if users_searched is None or users_searched == []:
+            return None
+        if users_searched[0].is_valid_password(user_pwd):
+            return users_searched[0]
+        return None
