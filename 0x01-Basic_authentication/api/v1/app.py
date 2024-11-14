@@ -28,6 +28,8 @@ def not_found(error) -> str:
 
 @app.before_request
 def before_request() -> str:
+    """ This Method is ran Before request
+    """
     if auth is None:
         return
     paths = ['/api/v1/status/', '/api/v1/unauthorized/', '/api/v1/forbidden/']
