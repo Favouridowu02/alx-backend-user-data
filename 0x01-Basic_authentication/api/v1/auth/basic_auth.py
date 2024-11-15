@@ -42,7 +42,6 @@ class BasicAuth(Auth):
                 The decoded value of a Base64 string
                 base64_authorization_header
         """
-        print("\n\n",base64_authorization_header, "\n\n")
         if base64_authorization_header is None:
             return None
         if not isinstance(base64_authorization_header, str):
@@ -98,7 +97,8 @@ class BasicAuth(Auth):
 
     def current_user(self, request=None) -> TypeVar('User'):
         """
-            This Method overloads Auth and retrieves the User instance for a user
+            This Method overloads Auth and retrieves the User instance for a
+            user
 
             Arguments:
                 request: The request
@@ -109,7 +109,7 @@ class BasicAuth(Auth):
 
             Return: returns the user
         """
-        a_h =  self.authorization_header(request)
+        a_h = self.authorization_header(request)
         b_a_h = self.extract_base64_authorization_header(a_h)
         d_b_a_h = self.decode_base64_authorization_header(b_a_h)
         if d_b_a_h is None:
