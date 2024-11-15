@@ -30,7 +30,7 @@ class BasicAuth(Auth):
             return None
         if authorization_header[:6] != "Basic ":
             return None
-        return authorization_header[6:]
+        return authorization_header.split()[1]
 
     def decode_base64_authorization_header(self,
                                            base64_authorization_header:
@@ -42,6 +42,7 @@ class BasicAuth(Auth):
                 The decoded value of a Base64 string
                 base64_authorization_header
         """
+        print("\n\n",base64_authorization_header, "\n\n")
         if base64_authorization_header is None:
             return None
         if not isinstance(base64_authorization_header, str):
@@ -50,9 +51,9 @@ class BasicAuth(Auth):
         try:
             base64_decoded = base64.b64decode(base64_authorization_header,
                                               validate=True)
+            return base64_decoded.decode('utf-8')
         except Exception as e:
             return None
-        return base64_decoded.decode('utf-8')
 
     def extract_user_credentials(self, decoded_base64_authorization_header:
                                  str) -> (str, str):
@@ -94,3 +95,26 @@ class BasicAuth(Auth):
         if users_searched[0].is_valid_password(user_pwd):
             return users_searched[0]
         return None
+
+    def current_user(self, request=None) -> TypeVar('User'):
+        """
+            This Method overloads Auth and retrieves the User instance for a user
+
+            Arguments:
+                request: The request
+
+            a_h: authorization_header
+            b_a_h: base64_authorization_header
+            d_b_a_h: decoded_base64_authorization_header
+
+            Return: returns the user
+        """
+        a_h =  self.authorization_header(request)
+        b_a_h = self.extract_base64_authorization_header(a_h)
+        d_b_a_h = self.decode_base64_authorization_header(b_a_h)
+        if d_b_a_h is None:
+            return None
+        email, password = self.extract_user_credentials(d_b_a_h)
+        user = self.user_object_from_credentials(email, password)
+
+        return user
