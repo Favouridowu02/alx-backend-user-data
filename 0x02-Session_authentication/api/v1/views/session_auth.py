@@ -10,8 +10,8 @@ from os import getenv
 
 @app_views.route('/auth_session/login', strict_slashes=False, methods=['POST'])
 def post_login():
-    """ POST /auth_session/login
-    - Return the dictionary representation of the User
+    """ POST /api/v1/auth_session/login
+      - Return the dictionary representation of the User
     """
     email = request.form.get('email')
     password = request.form.get('password')
@@ -33,3 +33,17 @@ def post_login():
     out = jsonify(user[0].to_json())
     out.set_cookie(session_name, session_id)
     return out
+
+
+@app_views.route('/auth_session/logout', strict_slashes=False,
+                 methods=['DELETE'])
+def delete_logout():
+    """ DELETE /api/v1/auth_session/logout
+      - Return an empty dictionary with the status code 200
+    """
+    from api.v1.app import auth
+
+    destory_session = auth.destroy_session(request)
+    if destory_session is False:
+        abort(404)
+    return jsonify({}), 200
