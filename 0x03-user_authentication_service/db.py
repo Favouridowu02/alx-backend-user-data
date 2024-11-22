@@ -7,6 +7,10 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.session import Session
 
+from sqlalchemy.orm.exc import NoResultFound
+from sqlalchemy.exc import InvalidRequestError
+
+
 from user import Base, User
 
 
@@ -49,5 +53,20 @@ class DB:
         except Exception as e:
             self._session.rollback()
             user = None
+
+        return user
+
+    def find_user_by(self, **kwargs: dict) -> User:
+        """
+            This method is used to search for user from the database
+        """
+        try:
+            user = self._session.query(User).filter_by(**kwargs).first()
+            if user is None:
+                raise NoResultFound("No user found")
+
+            return user
+        except InvalidRequestError as e2:
+            raise e2
 
         return user
