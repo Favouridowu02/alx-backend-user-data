@@ -26,7 +26,8 @@ def _hash_password(password: str) -> bytes:
 
     return hashed_password
 
-def _generate_uuid(self) -> str:
+
+def _generate_uuid() -> str:
     """
         This Method is used to generate a uuid
 
