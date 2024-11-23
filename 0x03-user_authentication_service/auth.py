@@ -26,16 +26,16 @@ def _hash_password(password: str) -> bytes:
 
     return hashed_password
 
-    def _generate_uuid(self) -> str:
-        """
-            This Method is used to generate a uuid
+def _generate_uuid(self) -> str:
+    """
+        This Method is used to generate a uuid
 
-            Arguments:
-                None
+        Arguments:
+            None
 
-            Return: returns the newly created uuid4
-        """
-        return str(uuid4())
+        Return: returns the newly created uuid4
+    """
+    return str(uuid4())
 
 
 class Auth:
