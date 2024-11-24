@@ -7,6 +7,7 @@ from db import DB
 from user import User
 from sqlalchemy.orm.exc import NoResultFound
 from uuid import uuid4
+from typing import Union
 
 
 def _hash_password(password: str) -> bytes:
@@ -90,6 +91,8 @@ class Auth:
 
             Arguments:
                 email: The user email in Str
+
+            Return: The session_id
         """
         try:
             user = self._db.find_user_by(email=email)
@@ -101,3 +104,22 @@ class Auth:
                 return session_id
         except Exception:
             pass
+
+    def get_user_from_session_id(self, session_id: str) -> Union[User, None]:
+        """
+            This Method is used to get the user by session_id
+
+            Arguments:
+                session_id: the session id in Str
+
+            Return: returns the user or none
+        """
+        try:
+            if session_id is None:
+                return None
+            user = self._db.get_user_from_session_id(session_id=session_id)
+            if user:
+                return User
+            return None
+        except Exception:
+            return None
