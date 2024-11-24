@@ -123,3 +123,24 @@ class Auth:
             return None
         except Exception:
             return None
+
+    def destroy_session(self, user_id: str) -> None:
+        """
+            This method is used to destroy a session_id by assigning
+            the user session_id to None
+
+            Arguments:
+                user_id: the user id in String
+
+            Returns: None
+        """
+        try:
+            if user_id is None:
+                return None
+            user = self._db.find_user_by(id=user_ud)
+            if user:
+                user.session_id = None
+                self._db._session.commit()
+            return None
+        except Exception:
+            None
