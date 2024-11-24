@@ -137,7 +137,7 @@ class Auth:
         try:
             if user_id is None:
                 return None
-            user = self._db.find_user_by(id=user_ud)
+            user = self._db.find_user_by(id=user_id)
             if user:
                 user.session_id = None
                 self._db._session.commit()
