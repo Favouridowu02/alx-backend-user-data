@@ -2,7 +2,7 @@
 """
     This module contains the setup for the Flask
 """
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, abort
 from auth import Auth
 
 
@@ -39,17 +39,21 @@ def user():
 @app.route('/sessions', strict_slashes=False, methods=['POST'])
 def login():
     """ GET '/login'
-      - Return 
+      - Return
     """
     try:
         email = request.form.get('email')
         password = request.form.get('password')
 
-        session_id = AUTH.create_session()
-        if session_id is None:
-            abort(401)
-    except:
-        return abort(401)
+        if AUTH.valid_login(email, password):
+            session_id = AUTH.create_session(email)
+            if session_id:
+                out = jsonify({'email': email, 'password': password})
+                out.set_cookie('session_id', session_id)
+                return out
+        abort(401)
+    except Exception:
+        abort(401)
 
 
 if __name__ == "__main__":
