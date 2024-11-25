@@ -2,7 +2,7 @@
 """
     This module contains the setup for the Flask
 """
-from flask import Flask, jsonify, request, abort
+from flask import Flask, jsonify, request, abort, redirect
 from auth import Auth
 
 
