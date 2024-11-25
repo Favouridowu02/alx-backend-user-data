@@ -38,8 +38,8 @@ def user():
 
 @app.route('/sessions', strict_slashes=False, methods=['POST'])
 def login():
-    """ GET '/login'
-      - Return
+    """ POST '/sessions'
+      - Return jsonify response message
     """
     try:
         email = request.form.get('email')
@@ -54,6 +54,39 @@ def login():
         abort(401)
     except Exception:
         abort(401)
+
+
+@app.route('/sessions', strict_slashes=True, methods=['DELETE'])
+def logout():
+    """ DELETE /sessions
+      - Return
+    """
+    try:
+        session_id = request.cookie.get('session_id')
+        if session_id:
+            user = AUTH.get_user_by_session_id(session_id)
+            if user:
+                AUTH.destroy_session(session_id)
+                redirect('/', methods['GET'])
+        abort(403)
+    except Exception:
+        abort(403)
+
+
+@app.route('/profile', strict_slashes=True, methods=['GET'])
+def profile():
+    """ GET /profile
+      - Return a jsnonify message
+    """
+    try:
+        session_id = request.cookie.get('session_id')
+        if session_id:
+            user = AUTH.get_user_by_session_id(session_id)
+            if user:
+                return jsonify({'email': email})
+        abort(403)
+    except Exception:
+        abort(403)
 
 
 if __name__ == "__main__":

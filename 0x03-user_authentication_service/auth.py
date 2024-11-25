@@ -143,4 +143,4 @@ class Auth:
                 self._db._session.commit()
             return None
         except Exception:
-            None
+            return None
