@@ -2,7 +2,7 @@
 """
     This module contains the setup for the Flask
 """
-from flask import Flask, jsonify, request, abort, redirect
+from flask import Flask, jsonify, request, abort, redirect, url_for
 from auth import Auth
 
 
@@ -67,7 +67,7 @@ def logout():
             user = AUTH.get_user_by_session_id(session_id)
             if user:
                 AUTH.destroy_session(session_id)
-                return redirect('/')
+                return redirect(url_for('home_route'))
         abort(403)
     except Exception:
         abort(403)
