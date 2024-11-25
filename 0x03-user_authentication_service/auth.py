@@ -144,3 +144,19 @@ class Auth:
             return None
         except Exception:
             return None
+
+    def get_reset_password_token(self, email: str) -> str:
+        """
+            This Method is used to get reste password token
+
+            Arguments:
+                email: The user email (String)
+            Returns: the token for the user password reset
+        """
+        user = self._db.find_user_by(email=email)
+        if not user:
+            raise ValueError
+        reset_token = _generate_uuid()
+        user.reset_token = reset_token
+        self._db._session.commit()
+        return reset_token
